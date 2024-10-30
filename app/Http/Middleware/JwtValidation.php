@@ -40,8 +40,11 @@ class JwtValidation
     }
     public function valid_token($token){
         
-        list($header, $payload, $sing) = explode(".", $token);
-
+       
+       $tokenSplit = list($header, $payload, $sing) = explode(".", $token);
+        if(!$tokenSplit){
+            return false;
+        }
         $dec_payload = json_decode(base64_decode($payload));
         $valid_sing = base64_encode(hash_hmac('sha256', $header . "." . $payload, $this->key, true));
 
